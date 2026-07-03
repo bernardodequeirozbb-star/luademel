@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Nossa Lua de Mel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root{
+    --cream:#F7EEDA;
+    --cream-2:#FBF5E8;
+    --navy:#1B2A4A;
+    --pink:#E0507A;
+    --teal:#1C7A79;
+    --teal-dark:#155E5D;
+    --mustard:#F0A93E;
+    --coral:#E8703A;
+    --green:#5C8A47;
+    --purple:#7A5C9E;
+    --paper-line: rgba(27,42,74,0.14);
+    --shadow: 0 10px 30px rgba(27,42,74,0.14);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--cream);
+    font-family:'Poppins', sans-serif;
+    color: var(--navy);
+    min-height:100vh;
+    overscroll-behavior-y: none;
+  }
+  .app{
+    max-width:480px;
+    margin:0 auto;
+    min-height:100vh;
+    position:relative;
+    background: var(--cream);
+    padding-bottom: 40px;
+  }
+  .screen{ display:none; animation: fadein .35s ease; }
+  .screen.active{ display:block; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+
+  /* ---------- decorative bits ---------- */
+  .petals{ position:absolute; top:0; left:0; width:100%; height:130px; overflow:hidden; pointer-events:none; }
+  .diamond-row{ display:flex; justify-content:center; gap:10px; padding:14px 0 4px; }
+  .diamond-row span{ width:9px; height:9px; transform:rotate(45deg); display:inline-block; }
+  .diamond-row span:nth-child(1){background:var(--pink);}
+  .diamond-row span:nth-child(2){background:var(--mustard);}
+  .diamond-row span:nth-child(3){background:var(--teal);}
+  .diamond-row span:nth-child(4){background:var(--coral);}
+  .diamond-row span:nth-child(5){background:var(--pink);}
+
+  /* ---------- HOME ---------- */
+  .home-header{ text-align:center; padding:26px 24px 10px; position:relative; }
+  .home-eyebrow{
+    font-family:'Caveat', cursive; font-size:22px; color:var(--pink); font-weight:700;
+  }
+  .home-title{
+    font-family:'Anton', sans-serif; font-size:44px; line-height:0.95; color:var(--navy);
+    letter-spacing:0.5px; margin:6px 0 2px;
+  }
+  .home-route{
+    font-family:'Poppins'; font-weight:600; font-size:13px; letter-spacing:2px;
+    color:var(--teal-dark); text-transform:uppercase; margin-top:6px;
+  }
+  .heart-trigger{
+    display:inline-block; margin-top:14px; font-size:22px; cursor:pointer; user-select:none;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.08));
+  }
+
+  .day-list{ padding: 18px 20px 10px; display:flex; flex-direction:column; gap:16px; }
+
+  .day-card{
+    position:relative;
+    background: var(--cream-2);
+    border-radius: 22px;
+    padding:18px 18px;
+    box-shadow: var(--shadow);
+    border: 1.5px solid rgba(27,42,74,0.08);
+    display:flex; align-items:center; gap:14px;
+    cursor:pointer;
+  }
+  .day-card.locked{ opacity:0.55; cursor:default; }
+  .day-card .stamp{
+    width:56px; height:56px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Anton'; font-size:20px; color:white; flex-shrink:0;
+  }
+  .day-card .stamp.mystery{
+    background: linear-gradient(135deg, #C9A24A, #8A6A22);
+  }
+  .day-card.locked .meta .city{ letter-spacing:1px; }
+  .day-card .meta{ flex:1; }
+  .day-card .meta .city{ font-family:'Anton'; font-size:19px; color:var(--navy); }
+  .day-card .meta .sub{ font-size:12.5px; color:rgba(27,42,74,0.65); margin-top:2px; }
+  .day-card .lockicon{ font-size:20px; }
+  .day-card .arrow{ font-size:18px; color:var(--teal-dark); }
+
+  .placeholder-card{
+    border: 2px dashed rgba(27,42,74,0.25);
+    border-radius:22px; padding:20px; text-align:center;
+    color:rgba(27,42,74,0.55); font-size:13.5px; font-family:'Poppins'; font-weight:500;
+  }
+
+  .home-footer{ text-align:center; padding:20px 30px 10px; font-family:'Caveat'; font-size:18px; color:var(--teal-dark); }
+
+  /* ---------- DAY DETAIL ---------- */
+  .day-hero{
+    position:relative; padding: 20px 22px 22px; color:white; overflow:hidden;
+    border-radius: 0 0 34px 34px;
+  }
+  .day-hero::before{
+    content:""; position:absolute; inset:0; opacity:0.15;
+    background-image: radial-gradient(circle at 20% 20%, white 0, transparent 40%),
+                       radial-gradient(circle at 80% 80%, white 0, transparent 35%);
+  }
+  .back-btn{
+    background: rgba(255,255,255,0.22); border:none; color:white; width:38px; height:38px;
+    border-radius:50%; font-size:18px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; position:relative; z-index:2;
+  }
+  .day-hero .eyebrow{ font-family:'Caveat'; font-size:19px; margin-top:14px; opacity:0.95; position:relative; z-index:2;}
+  .day-hero .city-title{ font-family:'Anton'; font-size:42px; line-height:0.95; margin:2px 0 0; position:relative; z-index:2;}
+  .day-hero .country{ font-family:'Poppins'; font-weight:600; letter-spacing:2px; font-size:12.5px; text-transform:uppercase; opacity:0.9; position:relative; z-index:2; margin-top:4px;}
+  .day-hero .date-pill{
+    display:inline-block; margin-top:14px; background:rgba(255,255,255,0.92); color:var(--navy);
+    font-family:'Anton'; font-size:13px; padding:6px 14px; border-radius:20px; position:relative; z-index:2;
+    letter-spacing:0.5px;
+  }
+  .day-hero .tagline{ font-family:'Caveat'; font-size:20px; margin-top:14px; position:relative; z-index:2; opacity:0.98;}
+
+  .logistics{
+    margin: -18px 20px 0; background:var(--cream-2); border-radius:18px; padding:16px 18px;
+    box-shadow: var(--shadow); position:relative; z-index:3; font-size:12.5px;
+  }
+  .logistics-title{ font-family:'Anton'; font-size:14px; color:var(--teal-dark); letter-spacing:0.5px; margin-bottom:8px;}
+  .logistics ul{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:6px;}
+  .logistics li{ display:flex; gap:8px; align-items:flex-start; color:rgba(27,42,74,0.85);}
+
+  .timeline-wrap{ padding: 26px 20px 10px; }
+  .timeline-title{
+    font-family:'Anton'; font-size:20px; color:var(--navy); margin-bottom:18px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .timeline{ position:relative; padding-left:6px; }
+  .timeline::before{
+    content:""; position:absolute; left:23px; top:6px; bottom:6px; width:2px;
+    background-image: linear-gradient(var(--paper-line) 60%, transparent 40%);
+    background-size: 2px 10px; background-repeat: repeat-y;
+  }
+  .t-item{ position:relative; padding-left:56px; padding-bottom:22px; }
+  .t-item:last-child{ padding-bottom:2px; }
+  .t-icon{
+    position:absolute; left:0; top:0; width:46px; height:46px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:19px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12); color:white; z-index:2;
+  }
+  .t-time{ font-family:'Anton'; font-size:14px; color:var(--coral); margin-bottom:2px; letter-spacing:0.3px;}
+  .t-title{ font-family:'Poppins'; font-weight:700; font-size:14.5px; color:var(--navy); }
+  .t-desc{ font-size:12.5px; color:rgba(27,42,74,0.72); margin-top:3px; line-height:1.4; }
+  .t-dist{ font-size:11px; color:var(--teal-dark); margin-top:5px; font-weight:600; display:inline-flex; align-items:center; gap:4px; }
+
+  .tip-box{
+    margin: 20px 20px 0; background: var(--mustard); border-radius:16px; padding:14px 16px;
+    font-size:12.5px; color:var(--navy); font-weight:500; display:flex; gap:10px; align-items:flex-start;
+  }
+  .tip-box b{ font-family:'Anton'; font-size:12px; letter-spacing:0.5px; }
+
+  /* ---------- INTERACTIVE MAP ---------- */
+  .map-section{ padding: 22px 20px 0; }
+  .map-section-title{
+    font-family:'Anton'; font-size:20px; color:var(--navy); margin-bottom:12px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .map-card{ background:var(--cream-2); border-radius:22px; padding:14px; box-shadow: var(--shadow); }
+  .leaflet-map{ width:100%; height:230px; border-radius:16px; overflow:hidden; background:#ddd; }
+  .leaflet-emoji-icon{
+    width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:15px; box-shadow:0 2px 6px rgba(0,0,0,0.35); border:2px solid white; transition: all .25s ease;
+  }
+  .leaflet-emoji-icon.current{
+    box-shadow: 0 0 0 6px rgba(232,112,58,0.30), 0 3px 10px rgba(0,0,0,0.35);
+  }
+  .map-info-card{
+    margin-top:12px; background:white; border-radius:14px; padding:12px 14px;
+    display:flex; gap:12px; align-items:center; box-shadow:0 3px 10px rgba(0,0,0,0.06);
+  }
+  .map-info-icon{
+    width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:19px; color:white; flex-shrink:0;
+  }
+  .map-info-text .time{ font-family:'Anton'; font-size:13px; color:var(--coral); }
+  .map-info-text .title{ font-weight:700; font-size:13.5px; color:var(--navy); margin-top:1px; }
+  .map-info-text .desc{ font-size:11.5px; color:rgba(27,42,74,0.65); margin-top:2px; line-height:1.35; }
+
+  .map-mini-timeline{ display:flex; gap:8px; overflow-x:auto; margin-top:12px; padding-bottom:2px; scrollbar-width:none; }
+  .map-mini-timeline::-webkit-scrollbar{ display:none; }
+  .mini-chip{
+    flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:3px; padding:7px 10px;
+    border-radius:12px; background:white; font-size:9.5px; font-weight:700; color:rgba(27,42,74,0.45);
+    cursor:pointer; border:2px solid transparent;
+  }
+  .mini-chip.active{ border-color: var(--teal); color:var(--navy); background:#EAF6F5; }
+  .mini-chip .ic{ font-size:15px; }
+
+  .map-slider-wrap{ margin-top:14px; padding: 0 4px; }
+  .map-slider{
+    width:100%; -webkit-appearance:none; appearance:none; height:6px; border-radius:3px;
+    background: rgba(27,42,74,0.15); outline:none; margin:0;
+  }
+  .map-slider::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:50%;
+    background: var(--coral); box-shadow:0 3px 8px rgba(0,0,0,0.3); cursor:pointer; border:3px solid white;
+  }
+  .map-slider::-moz-range-thumb{
+    width:22px; height:22px; border-radius:50%; background:var(--coral); border:3px solid white; cursor:pointer;
+  }
+  .slider-labels{ display:flex; justify-content:space-between; font-size:10px; color:rgba(27,42,74,0.5); margin-top:6px; font-weight:600; }
+
+  /* ---------- ADMIN ---------- */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(27,42,74,0.55); display:none;
+    align-items:center; justify-content:center; z-index:50; padding:24px;
+  }
+  .modal-backdrop.active{ display:flex; }
+  .modal{
+    background:var(--cream-2); border-radius:20px; padding:22px; width:100%; max-width:340px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  }
+  .modal h3{ font-family:'Anton'; margin:0 0 4px; color:var(--navy); font-size:18px;}
+  .modal p{ font-size:12.5px; color:rgba(27,42,74,0.7); margin:0 0 14px;}
+  .modal input[type=password]{
+    width:100%; padding:12px 14px; border-radius:12px; border:1.5px solid rgba(27,42,74,0.2);
+    font-size:15px; font-family:'Poppins'; margin-bottom:10px; background:white;
+  }
+  .modal-actions{ display:flex; gap:10px; margin-top:6px; }
+  .btn{
+    flex:1; border:none; padding:12px; border-radius:12px; font-family:'Poppins'; font-weight:600;
+    font-size:13.5px; cursor:pointer;
+  }
+  .btn-primary{ background:var(--teal); color:white; }
+  .btn-ghost{ background:transparent; color:var(--navy); }
+  .admin-error{ color:var(--coral); font-size:12px; margin:-4px 0 8px; display:none; }
+
+  .admin-list{ display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+  .admin-row{ display:flex; align-items:center; justify-content:space-between; background:white; padding:10px 12px; border-radius:12px; }
+  .admin-row .lbl{ font-size:13px; font-weight:600; }
+  .switch{ position:relative; width:44px; height:24px; }
+  .switch input{ opacity:0; width:0; height:0; }
+  .slider{ position:absolute; cursor:pointer; inset:0; background:#ccc; border-radius:24px; transition:.2s; }
+  .slider::before{ content:""; position:absolute; height:18px; width:18px; left:3px; bottom:3px; background:white; border-radius:50%; transition:.2s; }
+  input:checked + .slider{ background: var(--teal); }
+  input:checked + .slider::before{ transform:translateX(20px); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ HOME SCREEN ============ -->
+  <div id="screen-home" class="screen active">
+    <div class="home-header">
+      <div class="diamond-row"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="home-eyebrow">nossa</div>
+      <div class="home-title">LUA DE MEL</div>
+      <div class="home-route">Colômbia · Texas · Califórnia</div>
+      <div class="heart-trigger" id="heartTrigger">💛</div>
+    </div>
+
+    <div class="day-list" id="dayList"></div>
+
+    <div class="home-footer">um roteiro, dia a dia, só nosso ✿</div>
+  </div>
+
+  <!-- ============ DAY DETAIL SCREEN ============ -->
+  <div id="screen-day" class="screen"></div>
+
+</div>
+
+<!-- ============ ADMIN MODAL ============ -->
+<div class="modal-backdrop" id="passModal">
+  <div class="modal">
+    <h3>Área do Bernardo 🔐</h3>
+    <p>Digite a chave para liberar os dias.</p>
+    <input type="password" id="passInput" placeholder="chave secreta">
+    <div class="admin-error" id="passError">Chave incorreta, tenta de novo.</div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="passCancel">Cancelar</button>
+      <button class="btn btn-primary" id="passConfirm">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="adminModal">
+  <div class="modal">
+    <h3>Liberar dias</h3>
+    <p>Ative os dias que ela já pode ver.</p>
+    <div class="admin-list" id="adminList"></div>
+    <p style="margin-top:14px;">Link atualizado pra mandar pra ela:</p>
+    <input type="text" id="shareLinkBox" readonly style="width:100%; padding:10px 12px; border-radius:10px; border:1.5px solid rgba(27,42,74,0.2); font-size:11px; background:white; margin-bottom:8px; font-family:monospace;">
+    <button class="btn btn-primary" id="copyLinkBtn" style="width:100%; margin-bottom:10px;">Copiar link</button>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="adminClose" style="flex:none; width:100%;">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ADMIN_PASS = "chave2726";
+
+const TRIP = {
+  days: [
+    {
+      id: 1,
+      city: "Bogotá",
+      country: "Colômbia",
+      flag: "🇨🇴",
+      date: "27 de Julho",
+      eyebrow: "um dia inesquecível",
+      tagline: "Café, cultura e história no coração de Bogotá 💗",
+      theme: {
+        bg: "linear-gradient(135deg, #1C7A79, #155E5D)",
+        stamp: "#1C7A79"
+      },
+      logistics: [
+        "🚶 Total aproximado a pé: 3,5 a 4 km",
+        "📍 Todas as atrações ficam na região da Candelária",
+        "💧 Leve água, protetor solar e dinheiro em espécie",
+        "👕 Use roupas leves e calçados confortáveis"
+      ],
+      tip: "Bogotá tem clima ameno! Leve um casaco leve, mesmo durante o dia.",
+      mapPoints: [
+        {lat:4.7016, lng:-74.1469, time:"06:25", title:"Aeroporto El Dorado", desc:"Chegada em Bogotá. Imigração e retirada de bagagem.", icon:"✈️", color:"#1C7A79"},
+        {lat:4.6013, lng:-74.0728, time:"08:00", title:"Continental Hotel", desc:"Deixar as malas no hotel.", icon:"🏨", color:"#F0A93E"},
+        {lat:4.5975, lng:-74.0722, time:"08:30", title:"Gracia Coffee & Brunch", desc:"Café da manhã especial.", icon:"☕", color:"#E0507A"},
+        {lat:4.5972, lng:-74.0740, time:"09:45", title:"Caminhada pela Candelária", desc:"Ruas históricas, casas coloridas, grafites e lojinhas.", icon:"🚶", color:"#5C8A47"},
+        {lat:4.598056, lng:-74.075833, time:"10:45", title:"Plaza de Bolívar", desc:"Catedral Primada, Capitólio Nacional e Palácio da Justiça.", icon:"⛪", color:"#155E5D"},
+        {lat:4.59721, lng:-74.06971, time:"11:30", title:"Chorro de Quevedo", desc:"Praça histórica, cafés e artistas de rua.", icon:"📷", color:"#E8703A"},
+        {lat:4.5968, lng:-74.0705, time:"13:20", title:"Almoço", desc:"Almoço livre — boa carne colombiana.", icon:"🍽️", color:"#E0507A"},
+        {lat:4.6013, lng:-74.0728, time:"15:00", title:"Descanso", desc:"Dormir e recuperar do voo.", icon:"🛏️", color:"#155E5D"},
+        {lat:4.6027, lng:-74.0703, time:"19:00", title:"Jantar tranquilo", desc:"Jantar leve em Bogotá.", icon:"🌙", color:"#7A5C9E"},
+        {lat:4.6013, lng:-74.0728, time:"21:00", title:"Continental Hotel", desc:"Retorno para o hotel.", icon:"🏨", color:"#F0A93E"},
+        {lat:4.7016, lng:-74.1469, time:"00:00", title:"Aeroporto El Dorado", desc:"Saída do hotel para o aeroporto.", icon:"✈️", color:"#1C7A79"}
+      ],
+      items: [
+        {time:"06:25", icon:"✈️", color:"#1C7A79", title:"Chegada em Bogotá", desc:"Chegada ao Aeroporto Internacional El Dorado. Imigração, retirada de bagagem e Uber."},
+        {time:"07:30", icon:"🚗", color:"#E8703A", title:"Uber para o hotel", desc:"Trajeto até o Continental Hotel. Tempo estimado: 20 a 35 minutos."},
+        {time:"08:00", icon:"🧳", color:"#F0A93E", title:"Deixar as malas no hotel", desc:"Deixar as malas e se preparar para começar o dia!"},
+        {time:"08:15", icon:"🚶", color:"#5C8A47", title:"Caminhada até o café", desc:"Do hotel ao Gracia Coffee & Brunch.", dist:"~700 m · 10 min a pé"},
+        {time:"08:30", icon:"☕", color:"#E0507A", title:"Café da manhã — Gracia Coffee & Brunch", desc:"Café especial colombiano + brunch incrível para começar bem o dia."},
+        {time:"09:45", icon:"📸", color:"#155E5D", title:"Passeio pela Candelária", desc:"Explorar as ruas coloridas, grafites, igrejas e a arquitetura colonial."},
+        {time:"10:45", icon:"⛪", color:"#F0A93E", title:"Plaza de Bolívar", desc:"Visitar a praça principal: Catedral Primada, Capitólio Nacional, Palácio da Justiça e Monumento de Bolívar.", dist:"~500 m · 6 min a pé"},
+        {time:"11:30", icon:"📷", color:"#E8703A", title:"Chorro de Quevedo", desc:"O ponto onde Bogotá nasceu! Praça charmosa, artistas de rua, cafés e muita história.", dist:"~850 m · 10 min a pé"},
+        {time:"12:15", icon:"🚶", color:"#5C8A47", title:"Caminhada pelas ruas históricas", desc:"Ruas coloniais, lojinhas de artesanato, cafés e cultura local."},
+        {time:"13:20", icon:"🍽️", color:"#E0507A", title:"Almoço", desc:"Hora de explorar a gastronomia local e aproveitar uma boa carne colombiana."},
+        {time:"15:00–18:00", icon:"🛏️", color:"#155E5D", title:"Descanso", desc:"Tempo para recarregar as energias para o próximo voo."},
+        {time:"19:00", icon:"🌙", color:"#7A5C9E", title:"Jantar tranquilo", desc:"Aproveitar a noite em Bogotá. Curtir o momento."},
+        {time:"21:00", icon:"🚗", color:"#E8703A", title:"Retorno ao hotel", desc:"Descanso e organização para o voo."},
+        {time:"00:00", icon:"✈️", color:"#1C7A79", title:"Saída para o aeroporto", desc:"Sair do hotel com tranquilidade. Voo para Dallas às 04:25."}
+      ]
+    }
+  ]
+};
+
+let unlocked = {}; // { dayId: true/false }
+const LS_KEY = 'honeymoon-unlocked-days';
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    unlocked = raw ? JSON.parse(raw) : {};
+  }catch(e){ unlocked = {}; }
+  applyUnlockLinkFromUrl();
+  renderHome();
+}
+
+function saveState(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(unlocked)); }catch(e){}
+}
+
+function applyUnlockLinkFromUrl(){
+  const params = new URLSearchParams(window.location.search);
+  const u = params.get('u');
+  if(u){
+    u.split(',').map(s=>s.trim()).filter(Boolean).forEach(id=>{ unlocked[id] = true; });
+    saveState();
+    if(window.history && window.history.replaceState){
+      window.history.replaceState({}, '', window.location.origin + window.location.pathname);
+    }
+  }
+}
+
+function buildShareLink(){
+  const ids = Object.keys(unlocked).filter(id=>unlocked[id]);
+  const base = window.location.origin + window.location.pathname;
+  return ids.length ? (base + '?u=' + ids.join(',')) : base;
+}
+
+function renderHome(){
+  const list = document.getElementById('dayList');
+  list.innerHTML = "";
+  TRIP.days.forEach(day=>{
+    const isUnlocked = !!unlocked[day.id];
+    const card = document.createElement('div');
+    card.className = 'day-card' + (isUnlocked ? '' : ' locked');
+
+    if(isUnlocked){
+      card.innerHTML = `
+        <div class="stamp" style="background:${day.theme.stamp}">${String(day.id).padStart(2,'0')}</div>
+        <div class="meta">
+          <div class="city">${day.city} ${day.flag || ''}</div>
+          <div class="sub">${day.country} · ${day.date}</div>
+        </div>
+        <div class="arrow">→</div>
+      `;
+      card.addEventListener('click', ()=> openDay(day.id));
+    } else {
+      card.innerHTML = `
+        <div class="stamp mystery">${String(day.id).padStart(2,'0')}</div>
+        <div class="meta">
+          <div class="city">DIA ${String(day.id).padStart(2,'0')}</div>
+          <div class="sub">${day.date}</div>
+        </div>
+        <div class="lockicon">🔒</div>
+      `;
+    }
+    list.appendChild(card);
+  });
+
+  const placeholder = document.createElement('div');
+  placeholder.className = 'placeholder-card';
+  placeholder.innerText = '✿ mais dias vão aparecer aqui, aos poucos ✿';
+  list.appendChild(placeholder);
+}
+
+function openDay(id){
+  const day = TRIP.days.find(d=>d.id===id);
+  if(!day) return;
+  const screen = document.getElementById('screen-day');
+  screen.innerHTML = `
+    <div class="day-hero" style="background:${day.theme.bg}">
+      <button class="back-btn" id="backBtn">←</button>
+      <div class="eyebrow">${day.eyebrow}</div>
+      <div class="city-title">${day.city.toUpperCase()}</div>
+      <div class="country">${day.country}</div>
+      <div class="date-pill">${day.date}</div>
+      <div class="tagline">${day.tagline}</div>
+    </div>
+    <div class="logistics">
+      <div class="logistics-title">LOGÍSTICA DO DIA</div>
+      <ul>${day.logistics.map(l=>`<li>${l}</li>`).join('')}</ul>
+    </div>
+    <div class="map-section">
+      <div class="map-section-title">🗺️ Mapa do dia</div>
+      <div class="map-card">
+        <div id="leafletMap-${day.id}" class="leaflet-map"></div>
+        <div class="map-info-card" id="mapInfo-${day.id}"></div>
+        <div class="map-mini-timeline" id="miniTimeline-${day.id}"></div>
+        <div class="map-slider-wrap">
+          <input type="range" min="0" max="${day.mapPoints.length-1}" value="0" step="1" class="map-slider" id="mapSlider-${day.id}">
+          <div class="slider-labels"><span>${day.mapPoints[0].time}</span><span>arraste para navegar →</span><span>${day.mapPoints[day.mapPoints.length-1].time}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="timeline-wrap">
+      <div class="timeline-title">✷ Roteiro do dia</div>
+      <div class="timeline">
+        ${day.items.map(it=>`
+          <div class="t-item">
+            <div class="t-icon" style="background:${it.color}">${it.icon}</div>
+            <div class="t-time">${it.time}</div>
+            <div class="t-title">${it.title}</div>
+            <div class="t-desc">${it.desc}</div>
+            ${it.dist ? `<div class="t-dist">📍 ${it.dist}</div>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="tip-box">💡 <div><b>DICA —</b> ${day.tip}</div></div>
+  `;
+  document.getElementById('backBtn').addEventListener('click', goHome);
+  document.getElementById('screen-home').classList.remove('active');
+  screen.classList.add('active');
+  window.scrollTo(0,0);
+  initDayMap(day);
+}
+
+let mapInstances = {};
+
+function initDayMap(day){
+  const containerId = 'leafletMap-' + day.id;
+  const el = document.getElementById(containerId);
+  if(!el || typeof L === 'undefined') return;
+
+  const map = L.map(containerId, { zoomControl:false, attributionControl:false, scrollWheelZoom:false, dragging:true });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:19 }).addTo(map);
+
+  const pts = day.mapPoints;
+  const bounds = L.latLngBounds(pts.map(p=>[p.lat,p.lng]));
+  map.fitBounds(bounds, { padding:[28,28] });
+
+  const markers = pts.map((p, idx)=>{
+    const marker = L.marker([p.lat,p.lng], { icon: buildIcon(p, false, 32) }).addTo(map);
+    marker.on('click', ()=> setMapStep(day.id, idx));
+    return marker;
+  });
+
+  const polyline = L.polyline([], { color: day.theme.stamp, weight:4, opacity:0.85 }).addTo(map);
+
+  mapInstances[day.id] = { map, markers, polyline, pts, step:0 };
+
+  renderMiniTimeline(day);
+
+  document.getElementById('mapSlider-'+day.id).addEventListener('input', (e)=>{
+    setMapStep(day.id, parseInt(e.target.value));
+  });
+
+  setTimeout(()=>{ map.invalidateSize(); setMapStep(day.id, 0); }, 150);
+}
+
+function buildIcon(p, isCurrent, size){
+  return L.divIcon({
+    className:'',
+    html:`<div class="leaflet-emoji-icon ${isCurrent?'current':''}" style="background:${p.color}">${p.icon}</div>`,
+    iconSize:[size,size], iconAnchor:[size/2,size/2]
+  });
+}
+
+function setMapStep(dayId, step){
+  const inst = mapInstances[dayId];
+  if(!inst) return;
+  step = Math.max(0, Math.min(inst.pts.length-1, step));
+  inst.step = step;
+  const pts = inst.pts;
+
+  const coords = pts.slice(0, step+1).map(p=>[p.lat,p.lng]);
+  inst.polyline.setLatLngs(coords);
+
+  inst.markers.forEach((m, idx)=>{
+    const isCurrent = idx === step;
+    m.setIcon(buildIcon(pts[idx], isCurrent, isCurrent ? 42 : 30));
+    const el = m.getElement();
+    if(el) el.style.opacity = idx <= step ? '1' : '0.4';
+  });
+
+  inst.map.flyTo([pts[step].lat, pts[step].lng], 15, { duration:0.6 });
+
+  const info = document.getElementById('mapInfo-'+dayId);
+  const p = pts[step];
+  if(info){
+    info.innerHTML = `
+      <div class="map-info-icon" style="background:${p.color}">${p.icon}</div>
+      <div class="map-info-text">
+        <div class="time">${p.time}</div>
+        <div class="title">${p.title}</div>
+        <div class="desc">${p.desc}</div>
+      </div>
+    `;
+  }
+
+  const slider = document.getElementById('mapSlider-'+dayId);
+  if(slider) slider.value = step;
+
+  document.querySelectorAll('#miniTimeline-'+dayId+' .mini-chip').forEach((chip, idx)=>{
+    chip.classList.toggle('active', idx === step);
+  });
+  const activeChip = document.querySelector('#miniTimeline-'+dayId+' .mini-chip.active');
+  if(activeChip) activeChip.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+}
+
+function renderMiniTimeline(day){
+  const wrap = document.getElementById('miniTimeline-'+day.id);
+  if(!wrap) return;
+  wrap.innerHTML = day.mapPoints.map((p,idx)=>`
+    <div class="mini-chip" data-idx="${idx}">
+      <span class="ic">${p.icon}</span>
+      <span>${p.time}</span>
+    </div>
+  `).join('');
+  wrap.querySelectorAll('.mini-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=> setMapStep(day.id, parseInt(chip.dataset.idx)));
+  });
+}
+
+function goHome(){
+  document.getElementById('screen-day').classList.remove('active');
+  document.getElementById('screen-home').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ---------- admin flow ---------- */
+let tapCount = 0, tapTimer = null;
+document.getElementById('heartTrigger').addEventListener('click', ()=>{
+  tapCount++;
+  clearTimeout(tapTimer);
+  tapTimer = setTimeout(()=> tapCount = 0, 1200);
+  if(tapCount >= 5){
+    tapCount = 0;
+    document.getElementById('passModal').classList.add('active');
+    document.getElementById('passInput').value = '';
+    document.getElementById('passError').style.display = 'none';
+  }
+});
+
+document.getElementById('passCancel').addEventListener('click', ()=>{
+  document.getElementById('passModal').classList.remove('active');
+});
+
+document.getElementById('passConfirm').addEventListener('click', tryPass);
+document.getElementById('passInput').addEventListener('keydown', e=>{ if(e.key === 'Enter') tryPass(); });
+
+function tryPass(){
+  const val = document.getElementById('passInput').value;
+  if(val === ADMIN_PASS){
+    document.getElementById('passModal').classList.remove('active');
+    openAdmin();
+  } else {
+    document.getElementById('passError').style.display = 'block';
+  }
+}
+
+function openAdmin(){
+  const list = document.getElementById('adminList');
+  list.innerHTML = "";
+  TRIP.days.forEach(day=>{
+    const row = document.createElement('div');
+    row.className = 'admin-row';
+    row.innerHTML = `
+      <div class="lbl">${String(day.id).padStart(2,'0')} · ${day.city}</div>
+      <label class="switch">
+        <input type="checkbox" data-day="${day.id}" ${unlocked[day.id] ? 'checked' : ''}>
+        <span class="slider"></span>
+      </label>
+    `;
+    list.appendChild(row);
+  });
+  list.querySelectorAll('input[type=checkbox]').forEach(inp=>{
+    inp.addEventListener('change', (e)=>{
+      unlocked[e.target.dataset.day] = e.target.checked;
+      saveState();
+      renderHome();
+      updateShareLinkBox();
+    });
+  });
+  updateShareLinkBox();
+  document.getElementById('adminModal').classList.add('active');
+}
+
+function updateShareLinkBox(){
+  const box = document.getElementById('shareLinkBox');
+  if(box) box.value = buildShareLink();
+}
+
+document.getElementById('copyLinkBtn').addEventListener('click', ()=>{
+  const box = document.getElementById('shareLinkBox');
+  box.select();
+  box.setSelectionRange(0, 99999);
+  try{
+    navigator.clipboard.writeText(box.value);
+  }catch(e){
+    document.execCommand('copy');
+  }
+  const btn = document.getElementById('copyLinkBtn');
+  const original = btn.innerText;
+  btn.innerText = 'Copiado! ✓';
+  setTimeout(()=> btn.innerText = original, 1500);
+});
+
+document.getElementById('adminClose').addEventListener('click', ()=>{
+  document.getElementById('adminModal').classList.remove('active');
+});
+
+loadState();
+</script>
+</body>
+</html>
