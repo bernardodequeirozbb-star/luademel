@@ -60,7 +60,7 @@
   .diamond-row .decor-emoji:nth-child(3){ color:var(--teal); }
 
   /* ---------- HOME ---------- */
-  .home-header{ text-align:center; padding:26px 24px 10px; position:relative; }
+  .home-header{ text-align:center; padding:calc(26px + env(safe-area-inset-top)) 24px 10px; position:relative; }
   .home-eyebrow{
     font-family:'Cormorant Garamond', serif; font-style:italic; font-size:22px; color:var(--pink); font-weight:700; transition: color .5s ease;
   }
@@ -117,7 +117,7 @@
 
   /* ---------- DAY DETAIL ---------- */
   .day-hero{
-    position:relative; padding: 20px 22px 22px; color:white; overflow:hidden;
+    position:relative; padding: calc(20px + env(safe-area-inset-top)) 22px 22px; color:white; overflow:hidden;
     border-radius: 0 0 34px 34px;
   }
   .day-hero::before{
@@ -309,6 +309,18 @@
 
   /* Colombia: flores caindo */
   .card-anim-layer.anim-colombia-intro{ background: linear-gradient(180deg, #1C7A79 0%, #103F3E 100%); }
+  .colombia-hat{ position:relative; width:76px; height:44px; margin:0 auto 8px; z-index:2; animation: hatPop 1.1s ease; }
+  .colombia-hat .hat-brim{
+    position:absolute; bottom:0; left:0; width:76px; height:18px; border-radius:50%;
+    background: repeating-linear-gradient(90deg, #3B2A1A 0 4px, #E8C99B 4px 8px);
+    border:2px solid #2A1D10;
+  }
+  .colombia-hat .hat-crown{
+    position:absolute; bottom:11px; left:17px; width:42px; height:26px; border-radius:50% 50% 0 0;
+    background: repeating-linear-gradient(90deg, #3B2A1A 0 4px, #E8C99B 4px 8px);
+    border:2px solid #2A1D10; border-bottom:none;
+  }
+  @keyframes hatPop{ 0%{ transform:scale(0) rotate(-18deg); opacity:0;} 60%{ transform:scale(1.15) rotate(6deg); opacity:1;} 100%{ transform:scale(1) rotate(0deg); opacity:1;} }
   .mini-flower{ position:absolute; top:-18px; font-size:17px; animation: fallMini linear forwards; }
   @keyframes fallMini{ from{ top:-18px; transform:rotate(0deg);} to{ top:106%; transform:rotate(320deg);} }
 
@@ -1038,6 +1050,14 @@ function loadState(){
 
   // 3) fica de olho em novidades a cada 20s enquanto o app estiver aberto
   setInterval(syncFromFirebase, 20000);
+
+  // no iPhone, o navegador "congela" o app quando ele fica em segundo plano,
+  // então sincronizamos na hora assim que ela volta a abrir o app
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.visibilityState === 'visible') syncFromFirebase();
+  });
+  window.addEventListener('focus', syncFromFirebase);
+  window.addEventListener('pageshow', syncFromFirebase);
 }
 
 function syncFromFirebase(){
@@ -1104,6 +1124,55 @@ function playTexasAudio(){
   }catch(e){}
 }
 
+function playColombiaTune(){
+  // melodia original no espírito cumbia/vallenato: "acordeão" + raspador (guacharaca)
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [261.63, 329.63, 392.00, 329.63, 261.63, 392.00, 440.00, 392.00, 329.63, 261.63, 329.63, 392.00];
+    notes.forEach((f,i)=>{
+      const t = ctx.currentTime + i*0.2;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.value = f;
+      osc.connect(gain); gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0.001, t);
+      gain.gain.linearRampToValueAtTime(0.09, t+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, t+0.17);
+      osc.start(t); osc.stop(t+0.18);
+    });
+    // raspador tipo guacharaca nos contratempos
+    for(let i=0;i<notes.length;i++){
+      const t = ctx.currentTime + i*0.2 + 0.1;
+      const bufferSize = Math.floor(ctx.sampleRate * 0.06);
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let j=0;j<bufferSize;j++){ data[j] = (Math.random()*2-1) * (1 - j/bufferSize); }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass'; filter.frequency.value = 3000;
+      const ngain = ctx.createGain(); ngain.gain.value = 0.1;
+      noise.connect(filter); filter.connect(ngain); ngain.connect(ctx.destination);
+      noise.start(t);
+    }
+    // baixo marcando o tempo
+    const bassNotes = [130.81, 130.81, 146.83, 130.81];
+    bassNotes.forEach((f,i)=>{
+      const t = ctx.currentTime + i*0.6;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = f;
+      osc.connect(gain); gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0.001, t);
+      gain.gain.linearRampToValueAtTime(0.12, t+0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, t+0.5);
+      osc.start(t); osc.stop(t+0.52);
+    });
+  }catch(e){}
+}
+
 function startCardReveal(cardEl, day){
   if(cardEl.dataset.animating === "1") return;
   cardEl.dataset.animating = "1";
@@ -1122,8 +1191,9 @@ function startCardReveal(cardEl, day){
 
   if(animType === 'castle') playDisneyAudio();
   if(animType === 'texas-intro') playTexasAudio();
+  if(animType === 'colombia-intro') playColombiaTune();
 
-  const specialDurations = { 'texas-intro': 4300, 'castle': 4800, 'colombia-intro': 2700, 'california-intro': 2700 };
+  const specialDurations = { 'texas-intro': 4300, 'castle': 4800, 'colombia-intro': 4000, 'california-intro': 2700 };
   const duration = isSpecial ? (specialDurations[animType] || 2700) : 1100;
 
   setTimeout(()=>{
@@ -1174,7 +1244,7 @@ function buildCardAnimHTML(animType, day){
     for(let i=0;i<10;i++){
       flowers += `<div class="mini-flower" style="left:${randRange(4,94)}%; animation-delay:${randRange(0,1)}s; animation-duration:${randRange(1.8,2.6)}s;">🌺</div>`;
     }
-    return `${flowers}<div class="card-anim-title">COLÔMBIA</div><div class="card-anim-sub">☕ um novo começo</div>`;
+    return `${flowers}<div class="colombia-hat"><div class="hat-crown"></div><div class="hat-brim"></div></div><div class="card-anim-title">COLÔMBIA</div><div class="card-anim-sub">☕ bem-vinda à Colômbia</div>`;
   }
   if(animType === 'california-intro'){
     return `
