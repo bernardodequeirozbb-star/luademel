@@ -117,7 +117,7 @@
 
   /* ---------- DAY DETAIL ---------- */
   .day-hero{
-    position:relative; padding: calc(20px + env(safe-area-inset-top)) 22px 22px; color:white; overflow:hidden;
+    position:relative; padding: calc(40px + env(safe-area-inset-top)) 22px 22px; color:white; overflow:hidden;
     border-radius: 0 0 34px 34px;
   }
   .day-hero::before{
@@ -996,10 +996,14 @@ const PHASES = {
   }
 };
 
+function isDaySeen(day){
+  return !!unlocked[day.id] && revealed[day.id] === unlocked[day.id];
+}
+
 function getCurrentPhase(){
   let currentId = 0, phase = 'mystery';
   TRIP.days.forEach(day=>{
-    if(revealed[day.id] && day.id >= currentId){
+    if(isDaySeen(day) && day.id >= currentId){
       currentId = day.id;
       phase = day.phase;
     }
@@ -1049,7 +1053,7 @@ function loadState(){
   syncFromFirebase();
 
   // 3) fica de olho em novidades a cada 20s enquanto o app estiver aberto
-  setInterval(syncFromFirebase, 20000);
+  setInterval(syncFromFirebase, 5000);
 
   // no iPhone, o navegador "congela" o app quando ele fica em segundo plano,
   // então sincronizamos na hora assim que ela volta a abrir o app
@@ -1197,7 +1201,7 @@ function startCardReveal(cardEl, day){
   const duration = isSpecial ? (specialDurations[animType] || 2700) : 1100;
 
   setTimeout(()=>{
-    revealed[day.id] = true;
+    revealed[day.id] = unlocked[day.id];
     saveRevealedState();
     renderHome();
   }, duration);
@@ -1320,7 +1324,7 @@ function renderHome(){
   list.innerHTML = "";
   TRIP.days.forEach(day=>{
     const isUnlocked = !!unlocked[day.id];
-    const isRevealed = !!revealed[day.id];
+    const isRevealed = isDaySeen(day);
     const card = document.createElement('div');
 
     if(isUnlocked && isRevealed){
@@ -1623,8 +1627,14 @@ function openAdmin(){
   list.querySelectorAll('input[type=checkbox]').forEach(inp=>{
     inp.addEventListener('change', (e)=>{
       const dayId = e.target.dataset.day;
-      unlocked[dayId] = e.target.checked;
-      revealed[dayId] = e.target.checked; // seu próprio aparelho não precisa da animação surpresa
+      if(e.target.checked){
+        const ts = Date.now();
+        unlocked[dayId] = ts;
+        revealed[dayId] = ts; // seu próprio aparelho não precisa da animação surpresa
+      } else {
+        unlocked[dayId] = false;
+        revealed[dayId] = false;
+      }
       saveState();
       saveRevealedState();
       renderHome();
