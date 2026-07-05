@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lua de Mel">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
 <meta name="mobile-web-app-capable" content="yes">
 <title>Nossa Lua de Mel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
@@ -31,7 +33,7 @@
   html,body{margin:0;padding:0;}
   body{
     background: var(--cream);
-    font-family:'Poppins', sans-serif;
+    font-family:'EB Garamond', serif;
     color: var(--navy);
     min-height:100vh;
     overscroll-behavior-y: none;
@@ -60,14 +62,14 @@
   /* ---------- HOME ---------- */
   .home-header{ text-align:center; padding:26px 24px 10px; position:relative; }
   .home-eyebrow{
-    font-family:'Caveat', cursive; font-size:22px; color:var(--pink); font-weight:700; transition: color .5s ease;
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:22px; color:var(--pink); font-weight:700; transition: color .5s ease;
   }
   .home-title{
-    font-family:'Anton', sans-serif; font-size:44px; line-height:0.95; color:var(--navy);
+    font-family:'Playfair Display', serif; font-weight:800; font-size:44px; line-height:0.95; color:var(--navy);
     letter-spacing:0.5px; margin:6px 0 2px; transition: color .5s ease;
   }
   .home-route{
-    font-family:'Poppins'; font-weight:600; font-size:12.5px; letter-spacing:1.5px;
+    font-family:'EB Garamond'; font-weight:600; font-size:12.5px; letter-spacing:1.5px;
     color:var(--teal-dark); text-transform:uppercase; margin-top:6px; transition: color .5s ease;
     padding: 0 20px;
   }
@@ -93,14 +95,14 @@
   .day-card .stamp{
     width:56px; height:56px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
-    font-family:'Anton'; font-size:20px; color:white; flex-shrink:0;
+    font-family:'Playfair Display'; font-weight:800; font-size:20px; color:white; flex-shrink:0;
   }
   .day-card .stamp.mystery{
     background: linear-gradient(135deg, #C9A24A, #8A6A22);
   }
   .day-card.locked .meta .city{ letter-spacing:1px; }
   .day-card .meta{ flex:1; }
-  .day-card .meta .city{ font-family:'Anton'; font-size:19px; color:var(--navy); }
+  .day-card .meta .city{ font-family:'Playfair Display'; font-size:19px; color:var(--navy); }
   .day-card .meta .sub{ font-size:12.5px; color:rgba(27,42,74,0.65); margin-top:2px; }
   .day-card .lockicon{ font-size:20px; }
   .day-card .arrow{ font-size:18px; color:var(--teal-dark); }
@@ -108,10 +110,10 @@
   .placeholder-card{
     border: 2px dashed rgba(27,42,74,0.25);
     border-radius:22px; padding:20px; text-align:center;
-    color:rgba(27,42,74,0.55); font-size:13.5px; font-family:'Poppins'; font-weight:500;
+    color:rgba(27,42,74,0.55); font-size:13.5px; font-family:'EB Garamond'; font-weight:500;
   }
 
-  .home-footer{ text-align:center; padding:20px 30px 10px; font-family:'Caveat'; font-size:18px; color:var(--teal-dark); }
+  .home-footer{ text-align:center; padding:20px 30px 10px; font-family:'Cormorant Garamond'; font-style:italic; font-size:18px; color:var(--teal-dark); }
 
   /* ---------- DAY DETAIL ---------- */
   .day-hero{
@@ -128,27 +130,27 @@
     border-radius:50%; font-size:18px; display:flex; align-items:center; justify-content:center;
     cursor:pointer; position:relative; z-index:2;
   }
-  .day-hero .eyebrow{ font-family:'Caveat'; font-size:19px; margin-top:14px; opacity:0.95; position:relative; z-index:2;}
-  .day-hero .city-title{ font-family:'Anton'; font-size:42px; line-height:0.95; margin:2px 0 0; position:relative; z-index:2;}
-  .day-hero .country{ font-family:'Poppins'; font-weight:600; letter-spacing:2px; font-size:12.5px; text-transform:uppercase; opacity:0.9; position:relative; z-index:2; margin-top:4px;}
+  .day-hero .eyebrow{ font-family:'Cormorant Garamond'; font-style:italic; font-size:19px; margin-top:14px; opacity:0.95; position:relative; z-index:2;}
+  .day-hero .city-title{ font-family:'Playfair Display'; font-weight:800; font-size:42px; line-height:0.95; margin:2px 0 0; position:relative; z-index:2;}
+  .day-hero .country{ font-family:'EB Garamond'; font-weight:600; letter-spacing:2px; font-size:12.5px; text-transform:uppercase; opacity:0.9; position:relative; z-index:2; margin-top:4px;}
   .day-hero .date-pill{
     display:inline-block; margin-top:14px; background:rgba(255,255,255,0.92); color:var(--navy);
-    font-family:'Anton'; font-size:13px; padding:6px 14px; border-radius:20px; position:relative; z-index:2;
+    font-family:'Playfair Display'; font-size:13px; padding:6px 14px; border-radius:20px; position:relative; z-index:2;
     letter-spacing:0.5px;
   }
-  .day-hero .tagline{ font-family:'Caveat'; font-size:20px; margin-top:14px; position:relative; z-index:2; opacity:0.98;}
+  .day-hero .tagline{ font-family:'Cormorant Garamond'; font-style:italic; font-size:20px; margin-top:14px; position:relative; z-index:2; opacity:0.98;}
 
   .logistics{
     margin: -18px 20px 0; background:var(--cream-2); border-radius:18px; padding:16px 18px;
     box-shadow: var(--shadow); position:relative; z-index:3; font-size:12.5px;
   }
-  .logistics-title{ font-family:'Anton'; font-size:14px; color:var(--teal-dark); letter-spacing:0.5px; margin-bottom:8px;}
+  .logistics-title{ font-family:'Playfair Display'; font-size:14px; color:var(--teal-dark); letter-spacing:0.5px; margin-bottom:8px;}
   .logistics ul{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:6px;}
   .logistics li{ display:flex; gap:8px; align-items:flex-start; color:rgba(27,42,74,0.85);}
 
   .timeline-wrap{ padding: 26px 20px 10px; }
   .timeline-title{
-    font-family:'Anton'; font-size:20px; color:var(--navy); margin-bottom:18px;
+    font-family:'Playfair Display'; font-size:20px; color:var(--navy); margin-bottom:18px;
     display:flex; align-items:center; gap:8px;
   }
   .timeline{ position:relative; padding-left:6px; }
@@ -164,8 +166,8 @@
     display:flex; align-items:center; justify-content:center; font-size:19px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.12); color:white; z-index:2;
   }
-  .t-time{ font-family:'Anton'; font-size:14px; color:var(--coral); margin-bottom:2px; letter-spacing:0.3px;}
-  .t-title{ font-family:'Poppins'; font-weight:700; font-size:14.5px; color:var(--navy); }
+  .t-time{ font-family:'Playfair Display'; font-size:14px; color:var(--coral); margin-bottom:2px; letter-spacing:0.3px;}
+  .t-title{ font-family:'EB Garamond'; font-weight:700; font-size:14.5px; color:var(--navy); }
   .t-desc{ font-size:12.5px; color:rgba(27,42,74,0.72); margin-top:3px; line-height:1.4; }
   .t-dist{ font-size:11px; color:var(--teal-dark); margin-top:5px; font-weight:600; display:inline-flex; align-items:center; gap:4px; }
 
@@ -173,12 +175,12 @@
     margin: 20px 20px 0; background: var(--mustard); border-radius:16px; padding:14px 16px;
     font-size:12.5px; color:var(--navy); font-weight:500; display:flex; gap:10px; align-items:flex-start;
   }
-  .tip-box b{ font-family:'Anton'; font-size:12px; letter-spacing:0.5px; }
+  .tip-box b{ font-family:'Playfair Display'; font-size:12px; letter-spacing:0.5px; }
 
   /* ---------- INTERACTIVE MAP ---------- */
   .map-section{ padding: 22px 20px 0; }
   .map-section-title{
-    font-family:'Anton'; font-size:20px; color:var(--navy); margin-bottom:12px;
+    font-family:'Playfair Display'; font-size:20px; color:var(--navy); margin-bottom:12px;
     display:flex; align-items:center; gap:8px;
   }
   .map-card{ background:var(--cream-2); border-radius:22px; padding:14px; box-shadow: var(--shadow); }
@@ -198,7 +200,7 @@
     width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center;
     font-size:19px; color:white; flex-shrink:0;
   }
-  .map-info-text .time{ font-family:'Anton'; font-size:13px; color:var(--coral); }
+  .map-info-text .time{ font-family:'Playfair Display'; font-size:13px; color:var(--coral); }
   .map-info-text .title{ font-weight:700; font-size:13.5px; color:var(--navy); margin-top:1px; }
   .map-info-text .desc{ font-size:11.5px; color:rgba(27,42,74,0.65); margin-top:2px; line-height:1.35; }
 
@@ -236,15 +238,15 @@
     background:var(--cream-2); border-radius:20px; padding:22px; width:100%; max-width:340px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.3);
   }
-  .modal h3{ font-family:'Anton'; margin:0 0 4px; color:var(--navy); font-size:18px;}
+  .modal h3{ font-family:'Playfair Display'; margin:0 0 4px; color:var(--navy); font-size:18px;}
   .modal p{ font-size:12.5px; color:rgba(27,42,74,0.7); margin:0 0 14px;}
   .modal input[type=password]{
     width:100%; padding:12px 14px; border-radius:12px; border:1.5px solid rgba(27,42,74,0.2);
-    font-size:15px; font-family:'Poppins'; margin-bottom:10px; background:white;
+    font-size:15px; font-family:'EB Garamond'; margin-bottom:10px; background:white;
   }
   .modal-actions{ display:flex; gap:10px; margin-top:6px; }
   .btn{
-    flex:1; border:none; padding:12px; border-radius:12px; font-family:'Poppins'; font-weight:600;
+    flex:1; border:none; padding:12px; border-radius:12px; font-family:'EB Garamond'; font-weight:600;
     font-size:13.5px; cursor:pointer;
   }
   .btn-primary{ background:var(--teal); color:white; }
@@ -284,8 +286,8 @@
     position:absolute; inset:0; z-index:5; display:flex; align-items:center; justify-content:center;
     flex-direction:column; pointer-events:none; overflow:hidden; text-align:center; color:white;
   }
-  .card-anim-title{ font-family:'Anton'; font-size:22px; margin-top:8px; opacity:0; animation: cardTitleIn .6s ease forwards; animation-delay:1.3s; }
-  .card-anim-sub{ font-family:'Caveat'; font-size:15px; margin-top:2px; opacity:0; animation: cardTitleIn .6s ease forwards; animation-delay:1.55s; }
+  .card-anim-title{ font-family:'Playfair Display'; font-size:22px; margin-top:8px; opacity:0; animation: cardTitleIn .6s ease forwards; animation-delay:1.3s; }
+  .card-anim-sub{ font-family:'Cormorant Garamond'; font-style:italic; font-size:15px; margin-top:2px; opacity:0; animation: cardTitleIn .6s ease forwards; animation-delay:1.55s; }
   @keyframes cardTitleIn{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:translateY(0);} }
 
   .card-confetti{
@@ -361,6 +363,40 @@
   /* Genérico (dias sem animação especial) */
   .card-anim-layer.anim-generic{ background: linear-gradient(135deg, #4A3B78, #1E7F84); }
   .generic-pop-mini{ font-size:34px; animation: giftPulse .8s ease-in-out; }
+
+  /* ---------- CONTADOR REGRESSIVO (véu translúcido) ---------- */
+  .countdown-overlay{
+    position:fixed; inset:0; z-index:40; display:none;
+    align-items:center; justify-content:center; flex-direction:column;
+    background: rgba(20,16,40,0.72);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    text-align:center; padding:30px; cursor:pointer;
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .countdown-overlay.active{ display:flex; }
+  .countdown-overlay.closing{ opacity:0; transform:scale(1.08); pointer-events:none; }
+
+  .countdown-deco{ display:flex; gap:10px; margin-bottom:6px; font-size:16px; }
+  .countdown-eyebrow{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:24px; color:#FFC857; font-weight:700; }
+  .countdown-title{ font-family:'Playfair Display'; font-weight:800; font-size:26px; color:white; margin-top:2px; letter-spacing:0.5px; }
+
+  .countdown-grid{ display:flex; gap:12px; margin-top:26px; }
+  .countdown-unit{
+    background: rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.18);
+    border-radius:16px; padding:14px 10px; min-width:64px;
+  }
+  .countdown-num{ font-family:'Playfair Display'; font-weight:800; font-size:32px; color:white; line-height:1; }
+  .countdown-lbl{ font-family:'EB Garamond'; font-size:10px; color:rgba(255,255,255,0.65); text-transform:uppercase; letter-spacing:1px; margin-top:6px; font-weight:600; }
+
+  .countdown-hint{ font-family:'Cormorant Garamond'; font-style:italic; font-size:16px; color:rgba(255,255,255,0.55); margin-top:28px; }
+
+  .back-countdown-btn{
+    display:none; position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+    z-index:35; background: rgba(27,42,74,0.88); color:white; border:none;
+    padding:11px 20px; border-radius:30px; font-family:'EB Garamond'; font-weight:600;
+    font-size:13px; letter-spacing:0.3px; box-shadow:0 6px 18px rgba(0,0,0,0.25);
+    cursor:pointer;
+  }
 </style>
 </head>
 <body>
@@ -380,6 +416,21 @@
     <div class="day-list" id="dayList"></div>
 
     <div class="home-footer">um roteiro, dia a dia, só nosso <span class="footer-icon">✿</span></div>
+
+    <div class="countdown-overlay" id="countdownOverlay">
+      <div class="countdown-deco">✦ 💛 ✦</div>
+      <div class="countdown-eyebrow">falta pouco pra</div>
+      <div class="countdown-title">O NOSSO FOREVER</div>
+      <div class="countdown-grid">
+        <div class="countdown-unit"><div class="countdown-num" id="cd-days">00</div><div class="countdown-lbl">dias</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="cd-hours">00</div><div class="countdown-lbl">horas</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="cd-mins">00</div><div class="countdown-lbl">min</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="cd-secs">00</div><div class="countdown-lbl">seg</div></div>
+      </div>
+      <div class="countdown-hint">toque pra dar uma espiadinha ✿</div>
+    </div>
+
+    <button id="backToCountdownBtn" class="back-countdown-btn">⏳ voltar para contagem regressiva</button>
   </div>
 
   <!-- ============ DAY DETAIL SCREEN ============ -->
@@ -446,9 +497,9 @@ const TRIP = {
         {lat:4.5972, lng:-74.0740, time:"09:45", title:"Caminhada pela Candelária", desc:"Ruas históricas, casas coloridas, grafites e lojinhas.", icon:"🚶", color:"#5C8A47"},
         {lat:4.598056, lng:-74.075833, time:"10:45", title:"Plaza de Bolívar", desc:"Catedral Primada, Capitólio Nacional e Palácio da Justiça.", icon:"⛪", color:"#155E5D"},
         {lat:4.59721, lng:-74.06971, time:"11:30", title:"Chorro de Quevedo", desc:"Praça histórica, cafés e artistas de rua.", icon:"📷", color:"#E8703A"},
-        {lat:4.5968, lng:-74.0705, time:"13:20", title:"Almoço", desc:"Almoço livre, com uma boa carne colombiana.", icon:"🍽️", color:"#E0507A"},
+        {lat:4.5958, lng:-74.0716, time:"13:20", title:"La Tierrita del Berriondo", desc:"Comida típica boyacense na Candelaria.", icon:"🍽️", color:"#E0507A"},
         {lat:4.6013, lng:-74.0728, time:"15:00", title:"Descanso", desc:"Dormir e recuperar do voo.", icon:"🛏️", color:"#155E5D"},
-        {lat:4.6027, lng:-74.0703, time:"19:00", title:"Jantar tranquilo", desc:"Jantar leve em Bogotá.", icon:"🌙", color:"#7A5C9E"},
+        {lat:4.6017, lng:-74.0722, time:"19:00", title:"Crepes & Waffles Las Aguas", desc:"Lanche pertinho do hotel.", icon:"🌙", color:"#7A5C9E"},
         {lat:4.6013, lng:-74.0728, time:"21:00", title:"Continental Hotel", desc:"Retorno para o hotel.", icon:"🏨", color:"#F0A93E"},
         {lat:4.7016, lng:-74.1469, time:"00:00", title:"Aeroporto El Dorado", desc:"Saída do hotel para o aeroporto.", icon:"✈️", color:"#1C7A79"}
       ],
@@ -462,9 +513,9 @@ const TRIP = {
         {time:"10:45", icon:"⛪", color:"#F0A93E", title:"Plaza de Bolívar", desc:"Vamos conhecer a praça principal: Catedral Primada, Capitólio Nacional, Palácio da Justiça e o Monumento de Bolívar.", dist:"~500 m · 6 min a pé"},
         {time:"11:30", icon:"📷", color:"#E8703A", title:"Chorro de Quevedo", desc:"O ponto onde Bogotá nasceu! Uma praça charmosa, cheia de artistas de rua, cafés e história.", dist:"~850 m · 10 min a pé"},
         {time:"12:15", icon:"🚶", color:"#5C8A47", title:"Caminhada pelas ruas históricas", desc:"Vamos passear pelas ruas coloniais, lojinhas de artesanato e sentir a cultura local."},
-        {time:"13:20", icon:"🍽️", color:"#E0507A", title:"Almoço", desc:"Hora de provar a gastronomia local, com uma boa carne colombiana."},
+        {time:"13:20", icon:"🍽️", color:"#E0507A", title:"Almoço na La Tierrita del Berriondo", desc:"Comida típica boyacense, um pedacinho do campo colombiano em plena Candelaria."},
         {time:"15:00–18:00", icon:"🛏️", color:"#155E5D", title:"Descanso", desc:"Um tempo pra recarregar as energias antes de seguir viagem."},
-        {time:"19:00", icon:"🌙", color:"#7A5C9E", title:"Jantar tranquilo", desc:"Vamos aproveitar essa noite tranquila em Bogotá, só a gente."},
+        {time:"19:00", icon:"🌙", color:"#7A5C9E", title:"Lanche no Crepes & Waffles Las Aguas", desc:"Um lanche gostoso pertinho do hotel, pra fechar a noite tranquilos."},
         {time:"21:00", icon:"🚗", color:"#E8703A", title:"Retorno ao hotel", desc:"Voltamos pro hotel pra descansar e organizar tudo."},
         {time:"00:00", icon:"✈️", color:"#1C7A79", title:"Saída para o aeroporto", desc:"Saímos do hotel com tranquilidade, rumo ao próximo destino."}
       ]
@@ -496,23 +547,23 @@ TRIP.days.push({
   items: [
     {time:"12:15", icon:"✈️", color:"#3B5B77", title:"Aeroporto Internacional DFW", desc:"Chegamos em Dallas/Fort Worth!"},
     {time:"12:15–14:00", icon:"🧳", color:"#D9A441", title:"Retirada do carro alugado", desc:"Imigração, bagagem e vamos pegar nosso carro alugado."},
-    {time:"14:00", icon:"🍽️", color:"#8B3A2F", title:"Almoço no caminho", desc:"Vamos parar pra comer algo americano, hambúrguer, massa ou carne. Nada de mexicana ou salada hoje."},
+    {time:"14:00", icon:"🍽️", color:"#8B3A2F", title:"Almoço no Shake Shack", desc:"Um Shake Shack ali dentro do próprio aeroporto DFW."},
     {time:"15:00", icon:"🏠", color:"#6B4226", title:"Airbnb Dallas", desc:"Chegamos no nosso cantinho: 4001 Roseland Avenue, 303, Dallas. Check-in, banho e descanso."},
     {time:"15:00–17:30", icon:"💕", color:"#B5495B", title:"Tempo de lua de mel", desc:"Um tempinho só nosso antes de sair à noite."},
     {time:"17:30", icon:"🛒", color:"#5C8A47", title:"Mercado", desc:"Vamos comprar o que precisamos pro café da manhã dos próximos dias."},
     {time:"18:30", icon:"🛍️", color:"#3B5B77", title:"NorthPark Center", desc:"Um passeio leve pelo shopping, sem compromisso de compras."},
-    {time:"20:00", icon:"🍽️", color:"#8B3A2F", title:"Jantar leve", desc:"Uma refeição simples no shopping ou por perto, sem exagero."},
+    {time:"20:00", icon:"🍽️", color:"#8B3A2F", title:"Jantar no NorthPark Center", desc:"O restaurante ainda está em aberto, a Karina que vai escolher."},
     {time:"21:30", icon:"🏠", color:"#6B4226", title:"Retorno ao Airbnb", desc:"Voltamos pra descansar e dormir cedo."}
   ],
   mapPoints: [
     {lat:32.8998, lng:-97.0403, time:"12:15", title:"Aeroporto DFW", desc:"Chegada em Dallas/Fort Worth.", icon:"✈️", color:"#3B5B77"},
     {lat:32.8998, lng:-97.0403, time:"12:15–14:00", title:"Retirada do carro", desc:"Imigração, bagagem e retirada do carro.", icon:"🧳", color:"#D9A441"},
-    {lat:32.8500, lng:-96.9500, time:"14:00", title:"Almoço no caminho", desc:"Parada pra almoçar a caminho do Airbnb.", icon:"🍽️", color:"#8B3A2F"},
+    {lat:32.8998, lng:-97.0403, time:"14:00", title:"Shake Shack", desc:"Dentro do próprio aeroporto DFW.", icon:"🍽️", color:"#8B3A2F"},
     {lat:32.7935, lng:-96.7730, time:"15:00", title:"Airbnb Dallas", desc:"Check-in, banho e descanso.", icon:"🏠", color:"#6B4226"},
     {lat:32.7935, lng:-96.7730, time:"15:00–17:30", title:"Tempo de lua de mel", desc:"Descanso a dois no Airbnb.", icon:"💕", color:"#B5495B"},
     {lat:32.8020, lng:-96.7890, time:"17:30", title:"Mercado", desc:"Compras pro café da manhã dos próximos dias.", icon:"🛒", color:"#5C8A47"},
     {lat:32.8698, lng:-96.7739, time:"18:30", title:"NorthPark Center", desc:"Passeio leve pelo shopping.", icon:"🛍️", color:"#3B5B77"},
-    {lat:32.8698, lng:-96.7739, time:"20:00", title:"Jantar leve", desc:"Refeição simples no shopping ou por perto.", icon:"🍽️", color:"#8B3A2F"},
+    {lat:32.8698, lng:-96.7739, time:"20:00", title:"NorthPark Center", desc:"Jantar por lá, restaurante a definir pela Karina.", icon:"🍽️", color:"#8B3A2F"},
     {lat:32.7935, lng:-96.7730, time:"21:30", title:"Retorno ao Airbnb", desc:"Voltar pra descansar e dormir cedo.", icon:"🏠", color:"#6B4226"}
   ]
 });
@@ -542,22 +593,22 @@ TRIP.days.push({
     {time:"11:15", icon:"🤠", color:"#8B3A2F", title:"Fort Worth Stockyards", desc:"Chegamos no coração do Texas! Vamos passear pelas ruas históricas e sentir o clima cowboy."},
     {time:"11:30", icon:"🐂", color:"#6B4226", title:"Longhorn Cattle Drive", desc:"Vamos assistir à tradicional passagem dos bois Longhorn pelas ruas do Stockyards."},
     {time:"12:00", icon:"👢", color:"#5C4530", title:"Lojas country", desc:"Hora de procurar nossa bota texana e um chapéu de lembrança."},
-    {time:"13:30", icon:"🍖", color:"#8B3A2F", title:"Almoço BBQ", desc:"Nosso almoço especial de churrasco texano, o principal da viagem por aqui."},
+    {time:"13:30", icon:"🍖", color:"#8B3A2F", title:"Almoço no Stockyards", desc:"Vamos passear e ver o que parece mais legal. Uma indicação boa é o Cooper's Old Time Pit Bar-B-Que."},
     {time:"15:00", icon:"📸", color:"#3B5B77", title:"Passeio pelo Stockyards", desc:"Vamos continuar explorando, entrar nas lojas e sentir o verdadeiro clima texano pela Exchange Avenue."},
-    {time:"16:30", icon:"☕", color:"#D9A441", title:"Café ou sorvete", desc:"Uma pausa gostosa pra descansar e aproveitar o ambiente."},
+    {time:"16:30", icon:"☕", color:"#D9A441", title:"Sorvete", desc:"Um lanche leve à tarde, um sorvetinho pra refrescar."},
     {time:"17:00", icon:"🚶", color:"#5C8A47", title:"Último passeio", desc:"Mais um tempo livre pra conhecer esse distrito histórico."},
-    {time:"18:30", icon:"🚗", color:"#6B4226", title:"Retorno para Dallas", desc:"Voltamos tranquilos pro nosso cantinho em Dallas."}
+    {time:"18:30", icon:"🚗", color:"#6B4226", title:"Retorno para Dallas", desc:"Voltamos tranquilos pro nosso cantinho e comemos algo por lá."}
   ],
   mapPoints: [
     {lat:32.7935, lng:-96.7730, time:"08:30", title:"Airbnb Dallas", desc:"Café da manhã com calma antes de sair.", icon:"🍳", color:"#D9A441"},
     {lat:32.7893, lng:-97.3470, time:"11:15", title:"Fort Worth Stockyards", desc:"Chegada ao coração do Texas.", icon:"🤠", color:"#8B3A2F"},
     {lat:32.7889, lng:-97.3463, time:"11:30", title:"Longhorn Cattle Drive", desc:"A passagem dos bois Longhorn pelas ruas.", icon:"🐂", color:"#6B4226"},
     {lat:32.7885, lng:-97.3478, time:"12:00", title:"Lojas country", desc:"Busca pela bota e o chapéu texano.", icon:"👢", color:"#5C4530"},
-    {lat:32.7887, lng:-97.3468, time:"13:30", title:"Almoço BBQ", desc:"Churrasco texano, o principal da viagem.", icon:"🍖", color:"#8B3A2F"},
+    {lat:32.7871, lng:-97.3448, time:"13:30", title:"Almoço no Stockyards", desc:"Indicação: Cooper's Old Time Pit Bar-B-Que.", icon:"🍖", color:"#8B3A2F"},
     {lat:32.7893, lng:-97.3470, time:"15:00", title:"Passeio pelo Stockyards", desc:"Explorando a Exchange Avenue.", icon:"📸", color:"#3B5B77"},
-    {lat:32.7899, lng:-97.3458, time:"16:30", title:"Café ou sorvete", desc:"Pausa pra descansar e aproveitar o ambiente.", icon:"☕", color:"#D9A441"},
+    {lat:32.7899, lng:-97.3458, time:"16:30", title:"Sorvete", desc:"Lanche leve à tarde.", icon:"☕", color:"#D9A441"},
     {lat:32.7893, lng:-97.3470, time:"17:00", title:"Último passeio", desc:"Mais um tempo livre no distrito histórico.", icon:"🚶", color:"#5C8A47"},
-    {lat:32.7935, lng:-96.7730, time:"18:30", title:"Retorno para Dallas", desc:"Voltamos tranquilos pro nosso cantinho.", icon:"🚗", color:"#6B4226"}
+    {lat:32.7935, lng:-96.7730, time:"18:30", title:"Retorno para Dallas", desc:"Voltamos e comemos algo no Airbnb.", icon:"🚗", color:"#6B4226"}
   ]
 });
 
@@ -576,33 +627,77 @@ TRIP.days.push({
   },
   logistics: [
     "🙏 Hoje tem culto na UPPERROOM",
-    "🍽️ Almoço leve depois, prefiro americano ou italiano",
+    "🍽️ Almoço no Café Maya, ali no aquário",
     "🐠 O aquário rende umas 2 a 3 horas",
     "💛 Sem pressa hoje"
   ],
   tip: "Guarda um tempinho de coração aberto pro culto, acho que vai valer muito a pena.",
   items: [
-    {time:"08:30", icon:"🍳", color:"#D9A441", title:"Café da manhã no Airbnb", desc:"Vamos acordar com calma e preparar nosso café com o que compramos."},
-    {time:"10:00", icon:"🙏", color:"#5C4B8A", title:"UPPERROOM Dallas", desc:"Vamos participar do culto com a Laura Souguellis."},
-    {time:"12:30", icon:"🍽️", color:"#8B3A2F", title:"Almoço", desc:"Um almoço leve depois do culto, algo americano ou italiano."},
-    {time:"14:00", icon:"🐠", color:"#2E6E8E", title:"Dallas World Aquarium", desc:"Vamos passear pelos ambientes tropicais, ver os animais, as aves e a vida marinha."},
+    {time:"10:00", icon:"🙏", color:"#5C4B8A", title:"Café e culto na UPPERROOM", desc:"Vamos tomar um café por lá e participar do culto com a Laura Souguellis."},
+    {time:"12:30", icon:"🐠", color:"#2E6E8E", title:"Dallas World Aquarium", desc:"Chegamos e vamos passear pelos ambientes tropicais, ver os animais, as aves e a vida marinha."},
+    {time:"13:30", icon:"🍽️", color:"#8B3A2F", title:"Almoço no Café Maya", desc:"Sem sair do aquário, o restaurante fica ali dentro mesmo."},
     {time:"17:00", icon:"☕", color:"#D9A441", title:"Café ou sobremesa", desc:"Uma paradinha pra descansar antes de voltar."},
-    {time:"19:00", icon:"🍔", color:"#8B3A2F", title:"Jantar leve", desc:"Algo simples, pode ser hambúrguer, pizza ou sanduíche."},
-    {time:"20:30", icon:"🏠", color:"#6B4226", title:"Retorno ao Airbnb", desc:"Voltamos pra descansar e aproveitar a nossa noite."}
+    {time:"19:00", icon:"🏠", color:"#6B4226", title:"Jantar em casa", desc:"Hoje comemos em casa mesmo, no nosso cantinho."},
+    {time:"20:30", icon:"🏠", color:"#6B4226", title:"Noite no Airbnb", desc:"Vamos descansar e aproveitar a nossa noite."}
   ],
   mapPoints: [
-    {lat:32.7935, lng:-96.7730, time:"08:30", title:"Airbnb Dallas", desc:"Café da manhã com calma antes de sair.", icon:"🍳", color:"#D9A441"},
-    {lat:32.9518, lng:-96.8204, time:"10:00", title:"UPPERROOM Dallas", desc:"Culto com a Laura Souguellis.", icon:"🙏", color:"#5C4B8A"},
-    {lat:32.9450, lng:-96.8150, time:"12:30", title:"Almoço", desc:"Um almoço leve depois do culto.", icon:"🍽️", color:"#8B3A2F"},
-    {lat:32.7835, lng:-96.8054, time:"14:00", title:"Dallas World Aquarium", desc:"Ambientes tropicais, animais, aves e vida marinha.", icon:"🐠", color:"#2E6E8E"},
+    {lat:32.9518, lng:-96.8204, time:"10:00", title:"UPPERROOM Dallas", desc:"Café e culto com a Laura Souguellis.", icon:"🙏", color:"#5C4B8A"},
+    {lat:32.7835, lng:-96.8054, time:"12:30", title:"Dallas World Aquarium", desc:"Ambientes tropicais, animais, aves e vida marinha.", icon:"🐠", color:"#2E6E8E"},
+    {lat:32.7835, lng:-96.8054, time:"13:30", title:"Café Maya", desc:"Almoço ali dentro do aquário.", icon:"🍽️", color:"#8B3A2F"},
     {lat:32.7845, lng:-96.8040, time:"17:00", title:"Café ou sobremesa", desc:"Pausa pra descansar antes de voltar.", icon:"☕", color:"#D9A441"},
-    {lat:32.7970, lng:-96.7850, time:"19:00", title:"Jantar leve", desc:"Algo simples pra fechar o dia.", icon:"🍔", color:"#8B3A2F"},
-    {lat:32.7935, lng:-96.7730, time:"20:30", title:"Retorno ao Airbnb", desc:"Voltamos pra aproveitar nossa noite.", icon:"🏠", color:"#6B4226"}
+    {lat:32.7935, lng:-96.7730, time:"19:00", title:"Jantar em casa", desc:"Uma refeição tranquila no nosso cantinho.", icon:"🏠", color:"#6B4226"},
+    {lat:32.7935, lng:-96.7730, time:"20:30", title:"Noite no Airbnb", desc:"Descansando pra fechar o dia.", icon:"🏠", color:"#6B4226"}
   ]
 });
 
 TRIP.days.push({
   id: 5,
+  phase: "texas",
+  city: "Fort Worth",
+  country: "Texas, EUA",
+  flag: "🇺🇸",
+  date: "31 de Julho",
+  eyebrow: "Cowtown Championship Rodeo",
+  tagline: "De volta ao Stockyards, agora com rodeio à noite 🐴",
+  theme: {
+    bg: "linear-gradient(135deg, #3B5B77, #23384A)",
+    stamp: "#3B5B77"
+  },
+  logistics: [
+    "🚗 Vamos e voltamos de Fort Worth no mesmo dia",
+    "🍽️ Almoço e um café ainda estão em aberto",
+    "🐴 De noite tem rodeio no Cowtown Coliseum",
+    "👢 Aproveita pra rever as lojinhas do Stockyards"
+  ],
+  tip: "O rodeio à noite promete ser um dos points mais divertidos da viagem.",
+  items: [
+    {time:"09:00", icon:"☕", color:"#D9A441", title:"Café da manhã no Airbnb", desc:"Um café tranquilo pra começar o dia."},
+    {time:"10:15", icon:"🚗", color:"#3B5B77", title:"Saída para Fort Worth", desc:"Pegamos a estrada de novo rumo a Fort Worth."},
+    {time:"11:15", icon:"🤠", color:"#8B3A2F", title:"Fort Worth Stockyards", desc:"Chegamos de novo no Stockyards Historic District."},
+    {time:"11:30", icon:"🚶", color:"#5C8A47", title:"Passeio pelas ruas históricas", desc:"Rever as lojas e as ruas históricas da Exchange Avenue."},
+    {time:"13:15", icon:"🍽️", color:"#8B3A2F", title:"Almoço", desc:"Restaurante ainda a definir."},
+    {time:"14:30", icon:"☕", color:"#D9A441", title:"Café ou sobremesa", desc:"Local ainda a definir."},
+    {time:"15:00", icon:"🚶", color:"#5C8A47", title:"Continuação do passeio", desc:"Mais um tempo pelo Stockyards antes do rodeio."},
+    {time:"18:30", icon:"🐴", color:"#7A5C9E", title:"Cowtown Coliseum", desc:"Chegada ao coliseu pro grande evento da noite."},
+    {time:"19:30", icon:"🎪", color:"#E8703A", title:"Stockyards Championship Rodeo", desc:"O tradicional rodeio de Fort Worth, ao vivo."},
+    {time:"21:45", icon:"🚗", color:"#3B5B77", title:"Saída de Fort Worth", desc:"Voltando pra Dallas depois de um dia e tanto."},
+    {time:"22:45", icon:"🏠", color:"#6B4226", title:"Chegada ao Airbnb", desc:"De volta pro nosso cantinho, prontos pra descansar."}
+  ],
+  mapPoints: [
+    {lat:32.7935, lng:-96.7730, time:"09:00", title:"Airbnb Dallas", desc:"Café da manhã com calma.", icon:"☕", color:"#D9A441"},
+    {lat:32.7893, lng:-97.3470, time:"11:15", title:"Fort Worth Stockyards", desc:"Chegada ao Stockyards Historic District.", icon:"🤠", color:"#8B3A2F"},
+    {lat:32.7889, lng:-97.3465, time:"11:30", title:"Passeio pelas ruas históricas", desc:"Explorando a Exchange Avenue.", icon:"🚶", color:"#5C8A47"},
+    {lat:32.7887, lng:-97.3468, time:"13:15", title:"Almoço", desc:"Restaurante a definir.", icon:"🍽️", color:"#8B3A2F"},
+    {lat:32.7897, lng:-97.3462, time:"14:30", title:"Café ou sobremesa", desc:"Local a definir.", icon:"☕", color:"#D9A441"},
+    {lat:32.7893, lng:-97.3470, time:"15:00", title:"Continuação do passeio", desc:"Mais um tempo pelo Stockyards.", icon:"🚶", color:"#5C8A47"},
+    {lat:32.7890, lng:-97.3465, time:"18:30", title:"Cowtown Coliseum", desc:"Chegada pro grande evento da noite.", icon:"🐴", color:"#7A5C9E"},
+    {lat:32.7890, lng:-97.3465, time:"19:30", title:"Stockyards Championship Rodeo", desc:"O tradicional rodeio de Fort Worth.", icon:"🎪", color:"#E8703A"},
+    {lat:32.7935, lng:-96.7730, time:"22:45", title:"Chegada ao Airbnb", desc:"De volta pro nosso cantinho.", icon:"🏠", color:"#6B4226"}
+  ]
+});
+
+TRIP.days.push({
+  id: 6,
   phase: "california",
   revealAnim: "california-intro",
   city: "Hollywood",
@@ -657,7 +752,7 @@ TRIP.days.push({
 });
 
 TRIP.days.push({
-  id: 6,
+  id: 7,
   phase: "california",
   city: "Los Angeles",
   country: "Califórnia, EUA",
@@ -685,7 +780,7 @@ TRIP.days.push({
 });
 
 TRIP.days.push({
-  id: 7,
+  id: 8,
   phase: "california",
   revealAnim: "castle",
   city: "Disneyland",
@@ -708,19 +803,23 @@ TRIP.days.push({
   items: [
     {time:"07:30", icon:"☕", color:"#FFC857", title:"Café da manhã", desc:"Um café antes de sair pro parque."},
     {time:"09:00", icon:"🏰", color:"#7A5C9E", title:"Disneyland Park", desc:"Dia inteiro dedicado ao parque: Main Street U.S.A., Castelo da Bela Adormecida, Pirates of the Caribbean, Haunted Mansion, Big Thunder Mountain, Indiana Jones Adventure, Space Mountain, Star Wars Galaxy's Edge e Mickey & Minnie's Runaway Railway."},
+    {time:"13:00", icon:"🍽️", color:"#8B3A2F", title:"Almoço dentro do parque", desc:"Uma pausa gostosa sem sair da magia."},
+    {time:"19:00", icon:"🍽️", color:"#8B3A2F", title:"Jantar dentro do parque", desc:"Comendo por lá mesmo, aproveitando até a noite."},
     {time:"21:30", icon:"🎆", color:"#FF6F61", title:"Show noturno e fogos", desc:"Fechando o dia com um show de luzes e fogos."},
     {time:"22:00", icon:"🚗", color:"#4A3B78", title:"Retorno ao hotel", desc:"Voltamos pra descansar depois de um dia inteiro de parque."}
   ],
   mapPoints: [
     {lat:34.1445, lng:-118.2551, time:"07:30", title:"Café da manhã", desc:"Um café antes de sair.", icon:"☕", color:"#FFC857"},
     {lat:33.8121, lng:-117.9190, time:"09:00", title:"Disneyland Park", desc:"Dia inteiro dedicado ao parque.", icon:"🏰", color:"#7A5C9E"},
+    {lat:33.8121, lng:-117.9190, time:"13:00", title:"Almoço no parque", desc:"Pausa gostosa sem sair da magia.", icon:"🍽️", color:"#8B3A2F"},
+    {lat:33.8121, lng:-117.9190, time:"19:00", title:"Jantar no parque", desc:"Comendo por lá até a noite.", icon:"🍽️", color:"#8B3A2F"},
     {lat:33.8121, lng:-117.9190, time:"21:30", title:"Show noturno e fogos", desc:"Show de luzes e fogos pra fechar o dia.", icon:"🎆", color:"#FF6F61"},
     {lat:34.1445, lng:-118.2551, time:"22:00", title:"Retorno ao hotel", desc:"Voltando pra descansar.", icon:"🚗", color:"#4A3B78"}
   ]
 });
 
 TRIP.days.push({
-  id: 8,
+  id: 9,
   phase: "california",
   city: "Santa Monica & Venice",
   country: "Califórnia, EUA",
@@ -772,7 +871,7 @@ TRIP.days.push({
 });
 
 TRIP.days.push({
-  id: 9,
+  id: 10,
   phase: "california",
   city: "Hollywood",
   country: "Califórnia, EUA",
@@ -814,7 +913,7 @@ TRIP.days.push({
 });
 
 TRIP.days.push({
-  id: 10,
+  id: 11,
   phase: "california",
   city: "Retorno ao Brasil",
   country: "Califórnia, EUA",
@@ -916,7 +1015,7 @@ function applyPhaseTheme(phaseKey){
   if(heart) heart.innerText = phase.heart;
 
   const route = document.getElementById('homeRoute');
-  if(route) route.innerText = phase.name || 'uma surpresa revelada aos poucos';
+  if(route) route.innerText = phase.name || 'olha até onde um "what if" nos trouxe';
 
   document.querySelectorAll('.footer-icon').forEach(el=> el.innerText = phase.footerIcon);
 }
@@ -1476,6 +1575,86 @@ document.getElementById('adminClose').addEventListener('click', ()=>{
   document.getElementById('adminModal').classList.remove('active');
 });
 
+/* ---------- CONTADOR REGRESSIVO ---------- */
+// 27/07/2026, 02:20 (horário local do aparelho)
+const TRIP_COUNTDOWN_TARGET = new Date(2026, 6, 27, 2, 20, 0).getTime();
+let countdownTimer = null;
+let peekReturnTimer = null;
+
+function initCountdown(){
+  const overlay = document.getElementById('countdownOverlay');
+  if(!overlay) return;
+  overlay.addEventListener('click', peekCountdown);
+  const backBtn = document.getElementById('backToCountdownBtn');
+  if(backBtn) backBtn.addEventListener('click', ()=>{
+    if(peekReturnTimer) clearTimeout(peekReturnTimer);
+    backBtn.style.display = 'none';
+    showCountdown();
+  });
+  showCountdown();
+}
+
+function showCountdown(){
+  const overlay = document.getElementById('countdownOverlay');
+  const backBtn = document.getElementById('backToCountdownBtn');
+  if(!overlay) return;
+
+  if(backBtn) backBtn.style.display = 'none';
+
+  const now = Date.now();
+  if(now >= TRIP_COUNTDOWN_TARGET){
+    overlay.remove();
+    return;
+  }
+
+  overlay.classList.remove('closing');
+  overlay.classList.add('active');
+  updateCountdownDisplay(TRIP_COUNTDOWN_TARGET - now);
+
+  if(countdownTimer) clearInterval(countdownTimer);
+  countdownTimer = setInterval(()=>{
+    const diff = TRIP_COUNTDOWN_TARGET - Date.now();
+    if(diff <= 0){
+      clearInterval(countdownTimer);
+      overlay.classList.remove('active');
+      overlay.remove();
+      if(backBtn) backBtn.style.display = 'none';
+      return;
+    }
+    updateCountdownDisplay(diff);
+  }, 1000);
+}
+
+function updateCountdownDisplay(diff){
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.innerText = String(val).padStart(2,'0'); };
+  set('cd-days', d);
+  set('cd-hours', h);
+  set('cd-mins', m);
+  set('cd-secs', s);
+}
+
+function peekCountdown(){
+  const overlay = document.getElementById('countdownOverlay');
+  const backBtn = document.getElementById('backToCountdownBtn');
+  if(!overlay) return;
+  if(countdownTimer) clearInterval(countdownTimer);
+  overlay.classList.add('closing');
+  setTimeout(()=>{
+    overlay.classList.remove('active');
+    overlay.classList.remove('closing');
+  }, 700);
+  if(backBtn) backBtn.style.display = 'block';
+  if(peekReturnTimer) clearTimeout(peekReturnTimer);
+  peekReturnTimer = setTimeout(()=>{
+    showCountdown();
+  }, 1800000);
+}
+
+initCountdown();
 loadState();
 </script>
 </body>
