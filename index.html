@@ -287,7 +287,7 @@
     flex-direction:column; pointer-events:none; overflow:hidden; text-align:center; color:white;
   }
   .card-anim-title{ font-family:'Playfair Display'; font-size:22px; margin-top:8px; opacity:0; animation: cardTitleIn .6s ease forwards; animation-delay:1.3s; }
-  .card-anim-sub{ font-family:'Cormorant Garamond'; font-style:italic; font-size:15px; margin-top:2px; opacity:0; animation: cardTitleIn .6s ease forwards; animation-delay:1.55s; }
+  .card-anim-sub{ font-family:'Cormorant Garamond'; font-style:italic; font-size:20px; margin-top:2px; opacity:0; animation: cardTitleIn .6s ease forwards; animation-delay:1.55s; padding:0 14px; line-height:1.25; }
   @keyframes cardTitleIn{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:translateY(0);} }
 
   .card-confetti{
@@ -371,6 +371,16 @@
   .mc-t3{ left:96px; width:24px; height:60px; }
   .mc-t4{ left:124px; width:20px; height:46px; }
   .mc-window{ position:absolute; width:4px; height:6px; background:#FFD98A; border-radius:1px; box-shadow:0 0 4px #FFD98A; }
+
+  /* Rodeio: touro pulando com vaqueiro */
+  .card-anim-layer.anim-rodeo{ background: linear-gradient(180deg, #C98A4B 0%, #8B5E34 100%); }
+  .rodeo-wrap{ position:relative; width:100px; height:90px; margin:0 auto; }
+  .rodeo-bull{ font-size:64px; display:block; animation: bullBuck .45s ease-in-out infinite; transform-origin:bottom center; }
+  .rodeo-rider{ font-size:32px; position:absolute; top:-6px; left:50%; animation: riderBounce .45s ease-in-out infinite; }
+  .rodeo-dust{ position:absolute; bottom:-4px; left:50%; transform:translateX(-50%); font-size:13px; opacity:0.7; animation: dustPuff 1s ease-in-out infinite; }
+  @keyframes bullBuck{ 0%,100%{ transform:rotate(-10deg) translateY(0);} 50%{ transform:rotate(12deg) translateY(-16px);} }
+  @keyframes riderBounce{ 0%,100%{ transform:translateX(-50%) translateY(0) rotate(-8deg);} 50%{ transform:translateX(-50%) translateY(-20px) rotate(10deg);} }
+  @keyframes dustPuff{ 0%,100%{ opacity:0.5; transform:translateX(-50%) scale(1);} 50%{ opacity:0.85; transform:translateX(-50%) scale(1.3);} }
 
   /* Genérico (dias sem animação especial) */
   .card-anim-layer.anim-generic{ background: linear-gradient(135deg, #4A3B78, #1E7F84); }
@@ -665,6 +675,7 @@ TRIP.days.push({
 TRIP.days.push({
   id: 5,
   phase: "texas",
+  revealAnim: "rodeo",
   city: "Fort Worth",
   country: "Texas, EUA",
   flag: "🇺🇸",
@@ -1120,6 +1131,30 @@ function playDisneyAudio(){
 }
 
 
+function playYeehaw(){
+  // um "uhuu" estilo caubói, feito na hora com variação de tom
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if(ctx.state === 'suspended'){ ctx.resume(); }
+    const now = ctx.currentTime;
+    [0, 0.55].forEach(delay=>{
+      const t = now + delay;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.setValueAtTime(280, t);
+      osc.frequency.exponentialRampToValueAtTime(780, t+0.14);
+      osc.frequency.exponentialRampToValueAtTime(340, t+0.4);
+      gain.gain.setValueAtTime(0.001, t);
+      gain.gain.linearRampToValueAtTime(0.18, t+0.05);
+      gain.gain.linearRampToValueAtTime(0.14, t+0.28);
+      gain.gain.exponentialRampToValueAtTime(0.001, t+0.48);
+      osc.start(t); osc.stop(t+0.5);
+    });
+  }catch(e){}
+}
+
 function playTexasAudio(){
   try{
     const audio = new Audio(TEXAS_AUDIO);
@@ -1132,6 +1167,7 @@ function playColombiaTune(){
   // melodia original no espírito cumbia/vallenato: "acordeão" + raspador (guacharaca)
   try{
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if(ctx.state === 'suspended'){ ctx.resume(); }
     const notes = [261.63, 329.63, 392.00, 329.63, 261.63, 392.00, 440.00, 392.00, 329.63, 261.63, 329.63, 392.00];
     notes.forEach((f,i)=>{
       const t = ctx.currentTime + i*0.2;
@@ -1196,8 +1232,9 @@ function startCardReveal(cardEl, day){
   if(animType === 'castle') playDisneyAudio();
   if(animType === 'texas-intro') playTexasAudio();
   if(animType === 'colombia-intro') playColombiaTune();
+  if(animType === 'rodeo') playYeehaw();
 
-  const specialDurations = { 'texas-intro': 4300, 'castle': 4800, 'colombia-intro': 4000, 'california-intro': 2700 };
+  const specialDurations = { 'texas-intro': 4300, 'castle': 4800, 'colombia-intro': 4000, 'california-intro': 2700, 'rodeo': 3200 };
   const duration = isSpecial ? (specialDurations[animType] || 2700) : 1100;
 
   setTimeout(()=>{
@@ -1240,7 +1277,7 @@ function buildCardAnimHTML(animType, day){
         </g>
       </svg>
       <div class="card-anim-title">TEXAS</div>
-      <div class="card-anim-sub">🤠 chegou a hora do Texas</div>
+      <div class="card-anim-sub">está pronta para viver seu sonho, mozão? 🤠</div>
     `;
   }
   if(animType === 'colombia-intro'){
@@ -1257,6 +1294,17 @@ function buildCardAnimHTML(animType, day){
       <div class="mini-palm" style="right:10%; animation-delay:.4s;">🌴</div>
       <div class="card-anim-title">CALIFÓRNIA</div>
       <div class="card-anim-sub">🌅 sol, praia e novidade</div>
+    `;
+  }
+  if(animType === 'rodeo'){
+    return `
+      <div class="rodeo-wrap">
+        <div class="rodeo-dust">💨</div>
+        <div class="rodeo-bull">🐂</div>
+        <div class="rodeo-rider">🤠</div>
+      </div>
+      <div class="card-anim-title">COWTOWN</div>
+      <div class="card-anim-sub">segura, que hoje tem rodeio! 🎪</div>
     `;
   }
   if(animType === 'castle'){
